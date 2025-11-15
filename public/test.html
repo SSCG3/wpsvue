@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 接口测试页面</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #303133;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #909399;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #606266;
+    }
+
+    select, textarea, input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #dcdfe6;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: #0052ff;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #0046dd;
+    }
+
+    .btn-secondary {
+      background: #f5f7fa;
+      color: #606266;
+    }
+
+    .btn-secondary:hover {
+      background: #e4e7ed;
+    }
+
+    .btn-primary:disabled {
+      background: #a0cfff;
+      cursor: not-allowed;
+    }
+
+    .result-box {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f5f7fa;
+      border-radius: 4px;
+      border: 1px solid #e4e7ed;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .result-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #303133;
+    }
+
+    .word-count {
+      font-size: 12px;
+      color: #909399;
+    }
+
+    .result-content {
+      padding: 12px;
+      background: #fff;
+      border-radius: 4px;
+      min-height: 100px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      line-height: 1.6;
+      font-size: 14px;
+      color: #303133;
+    }
+
+    .loading {
+      color: #0052ff;
+    }
+
+    .error {
+      color: #f56c6c;
+      background: #fef0f0;
+      border: 1px solid #fde2e2;
+      padding: 12px;
+      border-radius: 4px;
+      margin-top: 12px;
+    }
+
+    .success {
+      color: #67c23a;
+      background: #f0f9ff;
+      border: 1px solid #c6e2ff;
+      padding: 12px;
+      border-radius: 4px;
+      margin-top: 12px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e4e7ed;
+      font-size: 13px;
+      color: #606266;
+    }
+
+    .cursor-blink {
+      display: inline-block;
+      animation: blink 1s infinite;
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🤖 AI 文本操作接口测试</h1>
+    <p class="subtitle">测试 SSE 流式响应接口</p>
+
+    <div class="form-group">
+      <label>操作类型</label>
+      <select id="operation">
+        <option value="expand">扩写（1.5倍）</option>
+        <option value="continue">续写（1倍）</option>
+        <option value="rewrite">改写（1倍）</option>
+        <option value="shorten">缩写（0.5倍）</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>原文本 *</label>
+      <textarea id="inputText" placeholder="输入需要处理的文本...">人工智能技术正在深刻改变着我们的生活方式。</textarea>
+    </div>
+
+    <div class="form-group">
+      <label>具体要求（可选）</label>
+      <input type="text" id="requirements" placeholder="例如：增加具体案例、使用专业术语、口语化表达等">
+    </div>
+
+    <div class="form-group">
+      <label>字数限制（可选，留空则自动计算）</label>
+      <input type="number" id="wordLimit" placeholder="例如：150" min="10" max="5000">
+    </div>
+
+    <div class="button-group">
+      <button class="btn-primary" id="generateBtn" onclick="generate()">开始生成</button>
+      <button class="btn-secondary" onclick="clearResult()">清空结果</button>
+    </div>
+
+    <div class="result-box" id="resultBox" style="display: none;">
+      <div class="result-header">
+        <span class="result-title">生成结果</span>
+        <span class="word-count" id="wordCount">0 字</span>
+      </div>
+      <div class="result-content" id="resultContent"></div>
+      <div class="stats" id="stats" style="display: none;">
+        <span>⏱️ 耗时: <span id="duration">0</span>s</span>
+        <span>📝 原文: <span id="originalLength">0</span> 字</span>
+        <span>✨ 生成: <span id="generatedLength">0</span> 字</span>
+        <span>📊 比例: <span id="ratio">0</span>x</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://110.42.43.130:3030/api/doc-editor/ai-operation';
+    const API_KEY = 'wps_ak_7f8b9c6d5e4a3b2c1d0e9f8a7b6c5d4e';
+
+    let isGenerating = false;
+    let startTime = 0;
+
+    async function generate() {
+      if (isGenerating) {
+        alert('正在生成中，请稍候...');
+        return;
+      }
+
+      const operation = document.getElementById('operation').value;
+      const text = document.getElementById('inputText').value.trim();
+      const requirements = document.getElementById('requirements').value.trim();
+      const wordLimitInput = document.getElementById('wordLimit').value;
+
+      if (!text) {
+        alert('请输入原文本');
+        return;
+      }
+
+      if (text.length < 2) {
+        alert('文本太短，至少需要2个字符');
+        return;
+      }
+
+      if (text.length > 10000) {
+        alert('文本过长，最多支持10000字符');
+        return;
+      }
+
+      // 计算字数限制
+      const multipliers = {
+        expand: 1.5,
+        continue: 1.0,
+        rewrite: 1.0,
+        shorten: 0.5
+      };
+
+      const wordLimit = wordLimitInput
+        ? parseInt(wordLimitInput)
+        : Math.floor(text.length * multipliers[operation]);
+
+      // 准备请求参数
+      const params = {
+        operation,
+        text,
+        word_limit: wordLimit
+      };
+
+      if (requirements) {
+        params.requirements = requirements;
+      }
+
+      // 显示结果区域
+      const resultBox = document.getElementById('resultBox');
+      const resultContent = document.getElementById('resultContent');
+      const generateBtn = document.getElementById('generateBtn');
+      const stats = document.getElementById('stats');
+
+      resultBox.style.display = 'block';
+      stats.style.display = 'none';
+      resultContent.innerHTML = '<span class="loading">正在连接...</span>';
+      generateBtn.disabled = true;
+      generateBtn.textContent = '生成中...';
+
+      isGenerating = true;
+      startTime = Date.now();
+      let accumulatedText = '';
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': API_KEY
+          },
+          body: JSON.stringify(params)
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        resultContent.innerHTML = '<span class="loading">正在生成<span class="cursor-blink">|</span></span>';
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n\n');
+          buffer = lines.pop() || '';
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const dataStr = line.substring(6).trim();
+
+              if (dataStr === '[DONE]') {
+                const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+                resultContent.textContent = accumulatedText;
+
+                // 显示统计信息
+                document.getElementById('duration').textContent = duration;
+                document.getElementById('originalLength').textContent = text.length;
+                document.getElementById('generatedLength').textContent = accumulatedText.length;
+                document.getElementById('ratio').textContent = (accumulatedText.length / text.length).toFixed(2);
+                stats.style.display = 'flex';
+
+                resultContent.innerHTML += '<div class="success">✅ 生成完成！</div>';
+                return;
+              }
+
+              try {
+                const data = JSON.parse(dataStr);
+                if (data.content) {
+                  accumulatedText += data.content;
+                  resultContent.textContent = accumulatedText;
+                  document.getElementById('wordCount').textContent = accumulatedText.length + ' 字';
+
+                  // 添加光标
+                  const cursor = document.createElement('span');
+                  cursor.className = 'cursor-blink';
+                  cursor.textContent = '|';
+                  resultContent.appendChild(cursor);
+                }
+              } catch (e) {
+                console.error('解析失败:', e);
+              }
+            }
+          }
+        }
+
+      } catch (error) {
+        console.error('生成失败:', error);
+        resultContent.innerHTML = `<div class="error">❌ ${error.message}</div>`;
+      } finally {
+        isGenerating = false;
+        generateBtn.disabled = false;
+        generateBtn.textContent = '开始生成';
+      }
+    }
+
+    function clearResult() {
+      document.getElementById('resultBox').style.display = 'none';
+      document.getElementById('resultContent').innerHTML = '';
+      document.getElementById('wordCount').textContent = '0 字';
+    }
+
+    // 回车键触发生成
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        generate();
+      }
+    });
+  </script>
+</body>
+</html>

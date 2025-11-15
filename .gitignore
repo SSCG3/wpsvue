@@ -1,0 +1,14 @@
+DS_Store
+.DS_Store
+*DS_Store
+node_modules
+dist
+wps-addon-build
+wps-addon-publish
+
+**/node_modules/
+*.tar
+**/dist
+
+**/.env.development
+**/.env
