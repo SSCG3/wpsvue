@@ -111,8 +111,8 @@ export default {
         const requestParams = {
           operation: params.operation,
           text: cleanText,
-          requirements: params.requirements || '',
-          word_limit: params.wordLimit || this.calculateWordLimit(params.operation, cleanText.length)
+          requirements: params.requirements || ''
+          // word_limit 不传递，让后端自动计算
         };
 
         console.log('准备的请求参数:', requestParams);
@@ -200,19 +200,6 @@ export default {
       if (this.operationParams) {
         this.handleOperate(this.operationParams);
       }
-    },
-
-    /**
-     * 计算字数限制
-     */
-    calculateWordLimit(operation, originalLength) {
-      const multipliers = {
-        expand: 1.5,
-        continue: 1.0,
-        rewrite: 1.0,
-        shorten: 0.5
-      };
-      return Math.floor(originalLength * (multipliers[operation] || 1.0));
     },
 
     /**

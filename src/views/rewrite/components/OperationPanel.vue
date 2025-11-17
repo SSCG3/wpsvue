@@ -61,13 +61,6 @@
         type="textarea"
         :rows="3"
       />
-      <el-input-number
-        v-model="wordLimit"
-        placeholder="字数限制"
-        :min="10"
-        :max="5000"
-        style="width: 100%; margin-top: 12px"
-      />
     </div>
 
     <div class="toggle-advanced">
@@ -100,7 +93,6 @@ export default {
     return {
       showAdvanced: false,
       requirements: '',
-      wordLimit: null,
       currentOp: ''
     };
   },
@@ -123,8 +115,7 @@ export default {
 
       this.$emit('operate', {
         operation,
-        requirements: this.requirements,
-        wordLimit: this.wordLimit
+        requirements: this.requirements
       });
     }
   }
