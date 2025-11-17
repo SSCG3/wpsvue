@@ -109,13 +109,16 @@ export function getSelectedText() {
   try {
     const selection = wps.Selection || wps.Application.Selection;
     const text = selection.Text || '';
-    // WPS的Selection.Text在没有选中内容时可能返回\r等特殊字符，需要trim判断
-    const trimmedText = text.trim();
+
+    // WPS的Selection.Text在没有选中内容时可能返回单个\r字符
+    // 只有当文本长度 <= 1 且包含特殊字符时才认为是空选择
+    const isEmpty = text.length === 0 || (text.length === 1 && text.charCodeAt(0) === 13);
+
     return {
-      text: trimmedText,
+      text: text,
       start: selection.Start,
       end: selection.End,
-      isEmpty: trimmedText.length === 0
+      isEmpty: isEmpty
     };
   } catch (error) {
     console.error('获取选中文本失败:', error);

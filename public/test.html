@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>AI 接口测试页面</title>
   <style>
     * {
@@ -235,6 +238,11 @@
   </div>
 
   <script>
+    // ============================================
+    // 版本标识 - 2025-11-17 修复参数名称
+    // ============================================
+    console.log('%c✅ 测试页面已加载 - 版本: 2025-11-17-v2 (使用word_limit参数)', 'color: green; font-weight: bold; font-size: 14px;');
+
     const API_URL = 'http://110.42.43.130:3030/api/doc-editor/ai-operation';
     const API_KEY = 'wps_ak_7f8b9c6d5e4a3b2c1d0e9f8a7b6c5d4e';
 
@@ -279,16 +287,28 @@
         ? parseInt(wordLimitInput)
         : Math.floor(text.length * multipliers[operation]);
 
-      // 准备请求参数
+      // 根据操作类型准备请求参数
       const params = {
-        operation,
-        text,
-        word_limit: wordLimit
+        operation: operation
       };
 
-      if (requirements) {
-        params.requirements = requirements;
+      // 所有操作使用统一的参数名（根据API文档）
+      params.text = text;  // ✅ 所有操作都用text
+      params.requirements = requirements || '';  // ✅ 所有操作都用requirements
+
+      // 🔥 强制使用代码中的提示词（数据库提示词格式有问题）
+      params.use_code_prompt = true;
+
+      // 根据操作类型添加特定参数
+      if (operation === 'continue') {
+        params.context = '';  // 续写需要context（测试页面没有上下文）
       }
+
+      if (wordLimit) {
+        params.word_limit = wordLimit;  // 可选的字数限制
+      }
+
+      console.log('发送的请求参数:', params);
 
       // 显示结果区域
       const resultBox = document.getElementById('resultBox');

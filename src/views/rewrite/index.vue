@@ -81,7 +81,10 @@ export default {
         return;
       }
 
-      this.selectedText = selection.text;
+      // 清理文本，去除前后空白和特殊字符
+      const cleanText = selection.text.trim();
+
+      this.selectedText = cleanText;  // 使用清理后的文本
       this.selectionInfo = selection;
       this.currentOperation = params.operation;
       this.operationParams = params;
@@ -89,14 +92,30 @@ export default {
       this.generatedText = '';
       this.loading = true;
 
+      // 调试输出
+      console.log('原始选中文本:', selection.text);
+      console.log('原始文本长度:', selection.text.length);
+      console.log('清理后文本:', cleanText);
+      console.log('清理后长度:', cleanText.length);
+
+      // 检查清理后的文本是否为空
+      if (!cleanText || cleanText.length === 0) {
+        this.$message.warning('请选中有效的文本内容');
+        this.showPreview = false;
+        this.loading = false;
+        return;
+      }
+
       try {
-        // 2. 准备请求参数
+        // 2. 准备请求参数 - 使用清理后的文本
         const requestParams = {
           operation: params.operation,
-          text: selection.text,
+          text: cleanText,
           requirements: params.requirements || '',
-          word_limit: params.wordLimit || this.calculateWordLimit(params.operation, selection.text.length)
+          word_limit: params.wordLimit || this.calculateWordLimit(params.operation, cleanText.length)
         };
+
+        console.log('准备的请求参数:', requestParams);
 
         // 3. 如果是续写，添加上下文
         if (params.operation === 'continue') {
@@ -203,7 +222,7 @@ export default {
       if (!this.loading && !this.showPreview) {
         const selection = wpsUtil.getSelectedText();
         if (!selection.isEmpty) {
-          this.selectedText = selection.text;
+          this.selectedText = selection.text.trim();  // 使用trim后的文本
         } else {
           this.selectedText = '';
         }

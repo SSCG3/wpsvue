@@ -28,6 +28,34 @@ export async function aiOperation(params, onChunk, onError) {
       throw new Error('operation 和 text 参数必填');
     }
 
+    // 根据不同操作类型构建请求参数
+    const requestBody = {
+      operation: params.operation
+    };
+
+    // 所有操作使用统一的参数名（根据API文档）
+    requestBody.text = params.text;  // ✅ 所有操作都用text
+    requestBody.requirements = params.requirements || '';  // ✅ 所有操作都用requirements
+
+    // 🔥 强制使用代码中的提示词（数据库提示词格式有问题）
+    requestBody.use_code_prompt = true;
+
+    // 根据操作类型添加特定参数
+    if (params.operation === 'continue') {
+      requestBody.context = params.context || '';  // 续写需要context
+    }
+
+    if (params.reference_materials) {
+      requestBody.reference_materials = params.reference_materials;  // 可选的参考材料
+    }
+
+    if (params.word_limit) {
+      requestBody.word_limit = params.word_limit;  // 可选的字数限制
+    }
+
+    // 调试输出
+    console.log('发送AI请求参数:', requestBody);
+
     // 发起请求
     const response = await fetch(`${API_BASE_URL}/api/doc-editor/ai-operation`, {
       method: 'POST',
@@ -35,7 +63,7 @@ export async function aiOperation(params, onChunk, onError) {
         'Content-Type': 'application/json',
         'X-API-Key': API_KEY
       },
-      body: JSON.stringify(params)
+      body: JSON.stringify(requestBody)
     });
 
     // 检查响应状态
