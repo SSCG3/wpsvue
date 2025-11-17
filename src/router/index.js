@@ -26,6 +26,22 @@ const router = createRouter({
       meta: {
         title: '智能重写'
       }
+    },
+    {
+      path: '/help',
+      name: '帮助',
+      component: () => import('../components/HelpDialog.vue'),
+      meta: {
+        title: '使用帮助'
+      }
+    },
+    {
+      path: '/about',
+      name: '关于',
+      component: () => import('../components/AboutDialog.vue'),
+      meta: {
+        title: '关于'
+      }
     }
   ]
 })

@@ -3,34 +3,33 @@
         <tabs>
             <!-- 智能重写功能 Tab -->
             <tab id="wpsAddinRewriteTab" label="智能重写">
-				<group id="btnOperationGroup" label="文本操作">
+				<group id="btnMainGroup" label="主要功能">
                     <button
-                        id="btnExpand"
-                        label="扩写"
+                        id="btnStart"
+                        label="开始"
                         onAction="ribbon.OnAction"
                         getImage="ribbon.GetImage"
                         size="large"
+                        screentip="打开智能重写工具"
+                        supertip="点击此按钮打开智能重写侧边栏，可进行扩写、续写、改写、缩写操作"
                     />
                     <button
-                        id="btnContinue"
-                        label="续写"
+                        id="btnHelp"
+                        label="帮助"
                         onAction="ribbon.OnAction"
                         getImage="ribbon.GetImage"
                         size="large"
+                        screentip="查看使用帮助"
+                        supertip="查看智能重写功能的详细使用说明和操作指南"
                     />
                     <button
-                        id="btnRewrite"
-                        label="改写"
+                        id="btnAbout"
+                        label="关于"
                         onAction="ribbon.OnAction"
                         getImage="ribbon.GetImage"
                         size="large"
-                    />
-                    <button
-                        id="btnShorten"
-                        label="缩写"
-                        onAction="ribbon.OnAction"
-                        getImage="ribbon.GetImage"
-                        size="large"
+                        screentip="关于本插件"
+                        supertip="查看插件版本信息和开发团队"
                     />
 				</group>
             </tab>

@@ -21,22 +21,21 @@ function OnAddinLoad(ribbonUI) {
   return true
 }
 
-// 操作类型映射（智能重写）
-const operationMap = {
-  'btnExpand': 'expand',
-  'btnContinue': 'continue',
-  'btnRewrite': 'rewrite',
-  'btnShorten': 'shorten'
-}
-
 var WebNotifycount = 0
 function OnAction(control) {
   const eleId = control.Id
 
   // 处理智能重写按钮
-  if (operationMap[eleId]) {
-    handleRewriteOperation(eleId)
-    return true
+  switch (eleId) {
+    case 'btnStart':
+      handleStartButton()
+      return true
+    case 'btnHelp':
+      handleHelpButton()
+      return true
+    case 'btnAbout':
+      handleAboutButton()
+      return true
   }
 
   // 处理demo原有按钮
@@ -120,11 +119,8 @@ function OnAction(control) {
   return true
 }
 
-// 处理智能重写操作
-function handleRewriteOperation(eleId) {
-  const operation = operationMap[eleId]
-
-  // 打开或激活智能重写任务窗格
+// 处理"开始"按钮 - 打开智能重写侧边栏
+function handleStartButton() {
   let tsId = window.Application.PluginStorage.getItem('rewrite_taskpane_id')
   let tskpane
 
@@ -137,29 +133,43 @@ function handleRewriteOperation(eleId) {
     tskpane.Visible = true
   } else {
     tskpane = window.Application.GetTaskPane(tsId)
-    if (!tskpane.Visible) {
-      tskpane.Visible = true
-    }
+    tskpane.Visible = !tskpane.Visible  // 切换显示/隐藏
   }
+}
 
-  // 延迟确保 TaskPane 已加载，然后触发对应操作
-  setTimeout(() => {
-    const iframe = tskpane.GetContentWindow()
-    if (iframe) {
-      iframe.postMessage({
-        type: 'WPS_OPERATION',
-        operation: operation
-      }, '*')
-    }
-  }, 300)
+// 处理"帮助"按钮 - 弹出帮助对话框
+function handleHelpButton() {
+  window.Application.ShowDialog(
+    Util.GetUrlPath() + Util.GetRouterHash() + '/help',
+    '智能重写使用帮助',
+    800 * window.devicePixelRatio,
+    600 * window.devicePixelRatio,
+    false
+  )
+}
+
+// 处理"关于"按钮 - 弹出关于对话框
+function handleAboutButton() {
+  window.Application.ShowDialog(
+    Util.GetUrlPath() + Util.GetRouterHash() + '/about',
+    '关于智能重写插件',
+    500 * window.devicePixelRatio,
+    600 * window.devicePixelRatio,
+    false
+  )
 }
 
 function GetImage(control) {
   const eleId = control.Id
 
   // 智能重写按钮图标
-  if (operationMap[eleId]) {
-    return 'images/logo.png'
+  switch (eleId) {
+    case 'btnStart':
+      return 'images/start.svg'
+    case 'btnHelp':
+      return 'images/help.svg'
+    case 'btnAbout':
+      return 'images/about.svg'
   }
 
   // demo原有按钮图标
@@ -197,6 +207,12 @@ function OnGetEnabled(control) {
 function OnGetVisible(control) {
   const eleId = control.Id
   console.log(eleId)
+
+  // 隐藏WPS系统调试器按钮
+  if (eleId === 'btnOpenDebugger' || eleId.toLowerCase().includes('debug')) {
+    return false
+  }
+
   return true
 }
 
