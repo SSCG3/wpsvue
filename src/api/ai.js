@@ -4,7 +4,7 @@
  */
 
 // API 配置
-const API_BASE_URL = 'http://110.42.43.130:3030';
+const API_BASE_URL = 'http://10.151.84.115:443';
 const API_KEY = 'wps_ak_7f8b9c6d5e4a3b2c1d0e9f8a7b6c5d4e';
 const TIMEOUT = 600000; // 10分钟超时
 
