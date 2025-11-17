@@ -2,23 +2,8 @@
   <div class="pg-rewrite">
     <!-- 顶部栏 -->
     <div class="top">
-      <div class="top-left">
-        <h3>
-          <i class="el-icon-edit"></i>
-          智能重写
-        </h3>
-      </div>
-      <div class="top-right">
-        <el-button
-          text
-          size="small"
-          @click="showHelp = true"
-          style="margin-right: 12px"
-        >
-          <i class="el-icon-question"></i> 帮助
-        </el-button>
-        <Avatar />
-      </div>
+      <div class="top-tip">在WPS文档中选中文本，然后点击下方的操作按钮</div>
+      <Avatar />
     </div>
 
     <!-- 主内容区 -->
@@ -42,55 +27,7 @@
         @cancel="handleCancel"
         @regenerate="handleRegenerate"
       />
-
-      <!-- 空状态 -->
-      <EmptyState
-        v-if="!showPreview && !selectedText && !loading"
-        title="开始使用智能重写"
-        description="在 WPS 文档中选中文本，然后点击上方的操作按钮"
-        :tips="[
-          '扩写：在原文基础上增加细节描述，生成约1.5倍内容',
-          '续写：在原文末尾继续生成后续内容',
-          '改写：保持核心意思，调整表达方式',
-          '缩写：提炼核心观点，压缩到约0.5倍'
-        ]"
-      />
     </div>
-
-    <!-- 帮助对话框 -->
-    <el-dialog
-      title="使用帮助"
-      v-model="showHelp"
-      width="500px"
-    >
-      <div class="help-content">
-        <h4>🚀 快速开始</h4>
-        <ol>
-          <li>在 WPS 文档中选中需要操作的文本</li>
-          <li>点击顶部 Ribbon 中的操作按钮（扩写/续写/改写/缩写）</li>
-          <li>等待 AI 生成内容</li>
-          <li>预览生成结果，点击"应用到文档"</li>
-        </ol>
-
-        <h4>💡 功能说明</h4>
-        <ul>
-          <li><strong>扩写</strong>：增加细节和描述，约1.5倍原文长度</li>
-          <li><strong>续写</strong>：在原文末尾继续生成内容</li>
-          <li><strong>改写</strong>：保持意思，换种表达方式</li>
-          <li><strong>缩写</strong>：提炼核心，压缩到约0.5倍</li>
-        </ul>
-
-        <h4>⚠️ 注意事项</h4>
-        <ul>
-          <li>选中文本长度：2-10000 字符</li>
-          <li>生成过程需要联网</li>
-          <li>可在高级选项中自定义要求</li>
-        </ul>
-      </div>
-      <template #footer>
-        <el-button @click="showHelp = false">关闭</el-button>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
@@ -99,7 +36,6 @@ import * as wpsUtil from '@/utils/wps';
 import * as aiApi from '@/api/ai';
 import OperationPanel from './components/OperationPanel.vue';
 import PreviewPanel from './components/PreviewPanel.vue';
-import EmptyState from './components/EmptyState.vue';
 import Avatar from '@/components/base/Avatar.vue';
 
 export default {
@@ -107,14 +43,12 @@ export default {
   components: {
     OperationPanel,
     PreviewPanel,
-    EmptyState,
     Avatar
   },
   data() {
     return {
       loading: false,
       showPreview: false,
-      showHelp: false,
       currentOperation: '',
       selectedText: '',
       generatedText: '',
@@ -308,36 +242,22 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #f5f7fa;
+  background: linear-gradient(180deg, #f0f4f8 0%, #e8eef5 100%);
 
   .top {
-    flex: 0 0 56px;
+    flex: 0 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-    background: #fff;
-    border-bottom: 1px solid #e4e7ed;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
 
-    &-left {
-      h3 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 600;
-        color: #303133;
-
-        i {
-          margin-right: 8px;
-          color: #0052ff;
-          font-size: 20px;
-        }
-      }
-    }
-
-    &-right {
-      display: flex;
-      align-items: center;
+    .top-tip {
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0.95;
     }
   }
 
@@ -346,33 +266,7 @@ export default {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-  }
-
-  .help-content {
-    h4 {
-      margin: 24px 0 12px 0;
-      font-size: 15px;
-      color: #303133;
-
-      &:first-child {
-        margin-top: 0;
-      }
-    }
-
-    ol, ul {
-      padding-left: 24px;
-
-      li {
-        margin: 8px 0;
-        font-size: 14px;
-        color: #606266;
-        line-height: 1.6;
-
-        strong {
-          color: #0052ff;
-        }
-      }
-    }
+    padding: 24px;
   }
 }
 </style>

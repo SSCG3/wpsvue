@@ -108,11 +108,14 @@ export function uiRefresh() {
 export function getSelectedText() {
   try {
     const selection = wps.Selection || wps.Application.Selection;
+    const text = selection.Text || '';
+    // WPS的Selection.Text在没有选中内容时可能返回\r等特殊字符，需要trim判断
+    const trimmedText = text.trim();
     return {
-      text: selection.Text || '',
+      text: trimmedText,
       start: selection.Start,
       end: selection.End,
-      isEmpty: !selection.Text || selection.Text === ''
+      isEmpty: trimmedText.length === 0
     };
   } catch (error) {
     console.error('获取选中文本失败:', error);
