@@ -8,6 +8,10 @@ const API_BASE_URL = 'http://10.151.84.115:443';
 const API_KEY = 'wps_ak_7f8b9c6d5e4a3b2c1d0e9f8a7b6c5d4e';
 const TIMEOUT = 600000; // 10分钟超时
 
+// 🎬 演示模式 - 用于录制视频
+const DEMO_MODE = false;  // 设置为 true 启用演示模式，false 使用真实API
+const DEMO_TEXT = '这是一段测试文档，智能重写插件项目正在开发中';
+
 /**
  * AI 文本操作（SSE 流式）
  * @param {Object} params - 请求参数
@@ -26,6 +30,32 @@ export async function aiOperation(params, onChunk, onError) {
     // 参数校验
     if (!params.operation || !params.text) {
       throw new Error('operation 和 text 参数必填');
+    }
+
+    // 🎬 演示模式 - 返回固定文本
+    if (DEMO_MODE) {
+      console.log('🎬 演示模式已启用 - 返回固定文本');
+
+      // 模拟流式输出 - 每2个字符输出一次
+      const chars = DEMO_TEXT.split('');
+      let accumulatedText = '';
+      let chunkBuffer = '';
+
+      for (let i = 0; i < chars.length; i++) {
+        chunkBuffer += chars[i];
+        accumulatedText += chars[i];
+
+        // 每2个字符或最后一个字符时输出
+        if (chunkBuffer.length >= 2 || i === chars.length - 1) {
+          if (onChunk && typeof onChunk === 'function') {
+            await new Promise(resolve => setTimeout(resolve, 80)); // 模拟延迟
+            onChunk(chunkBuffer, accumulatedText);
+          }
+          chunkBuffer = '';
+        }
+      }
+
+      return accumulatedText;
     }
 
     // 根据不同操作类型构建请求参数
