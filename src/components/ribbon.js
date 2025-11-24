@@ -139,8 +139,10 @@ function handleStartButton() {
 
 // 处理"帮助"按钮 - 弹出帮助对话框
 function handleHelpButton() {
+  // 添加时间戳参数强制WPS重新加载页面，避免缓存
+  const timestamp = new Date().getTime()
   window.Application.ShowDialog(
-    Util.GetUrlPath() + Util.GetRouterHash() + '/help',
+    Util.GetUrlPath() + Util.GetRouterHash() + '/help?t=' + timestamp,
     '智能重写使用帮助',
     800 * window.devicePixelRatio,
     600 * window.devicePixelRatio,
@@ -150,8 +152,10 @@ function handleHelpButton() {
 
 // 处理"关于"按钮 - 弹出关于对话框
 function handleAboutButton() {
+  // 添加时间戳参数强制WPS重新加载页面，避免缓存
+  const timestamp = new Date().getTime()
   window.Application.ShowDialog(
-    Util.GetUrlPath() + Util.GetRouterHash() + '/about',
+    Util.GetUrlPath() + Util.GetRouterHash() + '/about?t=' + timestamp,
     '关于智能重写插件',
     500 * window.devicePixelRatio,
     600 * window.devicePixelRatio,

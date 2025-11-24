@@ -7,29 +7,27 @@
         </div>
         <h1>智能重写插件</h1>
       </div>
-      <div class="version">v1.0.1</div>
-
       <div class="divider"></div>
 
       <div class="info-section">
         <div class="info-item">
-          <div class="label">项目经理</div>
-          <div class="value">刘万会</div>
+          <div class="label">项目单位</div>
+          <div class="value">文字智能审校QC小组</div>
         </div>
 
         <div class="info-item">
-          <div class="label">技术执行</div>
-          <div class="value">周佺喜</div>
+          <div class="label">版本号</div>
+          <div class="value">v1.01</div>
         </div>
 
         <div class="info-item">
-          <div class="label">开发年月</div>
+          <div class="label">开发时间</div>
           <div class="value">2025年11月</div>
         </div>
       </div>
 
       <div class="footer">
-        <p>© 2025 国能QC项目团队 保留所有权利</p>
+        <p>©2025 国能数科公司 保留所有权利</p>
       </div>
     </div>
   </div>
