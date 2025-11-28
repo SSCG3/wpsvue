@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <JsPlugin>
   <ApiVersion>1.0.0</ApiVersion>
-  <Name>智能重写</Name>
-  <Description>智能重写插件 - 提供扩写、续写、改写、缩写功能</Description>
+  <Name>AI写稿</Name>
+  <Description>AI写稿插件 - 提供扩写、续写、改写、缩写功能</Description>
 </JsPlugin>

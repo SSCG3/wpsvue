@@ -21,10 +21,10 @@ const router = createRouter({
     },
     {
       path: '/rewrite',
-      name: '智能重写',
+      name: 'AI写稿',
       component: () => import('../views/rewrite/index.vue'),
       meta: {
-        title: '智能重写'
+        title: 'AI写稿'
       }
     },
     {

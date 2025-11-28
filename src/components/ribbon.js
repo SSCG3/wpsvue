@@ -25,7 +25,7 @@ var WebNotifycount = 0
 function OnAction(control) {
   const eleId = control.Id
 
-  // 处理智能重写按钮
+  // 处理AI写稿按钮
   switch (eleId) {
     case 'btnStart':
       handleStartButton()
@@ -119,7 +119,7 @@ function OnAction(control) {
   return true
 }
 
-// 处理"开始"按钮 - 打开智能重写侧边栏
+// 处理"开始"按钮 - 打开AI写稿侧边栏
 function handleStartButton() {
   let tsId = window.Application.PluginStorage.getItem('rewrite_taskpane_id')
   let tskpane
@@ -143,7 +143,7 @@ function handleHelpButton() {
   const timestamp = new Date().getTime()
   window.Application.ShowDialog(
     Util.GetUrlPath() + Util.GetRouterHash() + '/help?t=' + timestamp,
-    '智能重写使用帮助',
+    'AI写稿使用帮助',
     800 * window.devicePixelRatio,
     600 * window.devicePixelRatio,
     false
@@ -156,7 +156,7 @@ function handleAboutButton() {
   const timestamp = new Date().getTime()
   window.Application.ShowDialog(
     Util.GetUrlPath() + Util.GetRouterHash() + '/about?t=' + timestamp,
-    '关于智能重写插件',
+    '关于AI写稿插件',
     500 * window.devicePixelRatio,
     600 * window.devicePixelRatio,
     false
@@ -166,7 +166,7 @@ function handleAboutButton() {
 function GetImage(control) {
   const eleId = control.Id
 
-  // 智能重写按钮图标
+  // AI写稿按钮图标
   switch (eleId) {
     case 'btnStart':
       return 'images/start.svg'

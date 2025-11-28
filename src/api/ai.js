@@ -10,7 +10,7 @@ const TIMEOUT = 600000; // 10分钟超时
 
 // 🎬 演示模式 - 用于录制视频
 const DEMO_MODE = false;  // 设置为 true 启用演示模式，false 使用真实API
-const DEMO_TEXT = '这是一段测试文档，智能重写插件项目正在开发中';
+const DEMO_TEXT = '这是一段测试文档，AI写稿插件项目正在开发中';
 
 /**
  * AI 文本操作（SSE 流式）

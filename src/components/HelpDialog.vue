@@ -1,8 +1,8 @@
 <template>
   <div class="help-dialog">
     <div class="help-header">
-      <h1>智能重写使用帮助</h1>
-      <p class="subtitle">快速掌握智能重写功能，提升文档写作效率</p>
+      <h1>AI写稿使用帮助</h1>
+      <p class="subtitle">快速掌握AI写稿功能，提升文档写作效率</p>
     </div>
 
     <div class="help-content">
@@ -12,7 +12,7 @@
         <h2>快速开始</h2>
         <ol class="step-list">
           <li>在WPS文档中选中需要操作的文本</li>
-          <li>点击顶部Ribbon"智能重写"Tab下的"开始"按钮</li>
+          <li>点击顶部Ribbon"AI写稿"Tab下的"开始"按钮</li>
           <li>在右侧侧边栏选择需要的操作（扩写/续写/改写/缩写）</li>
           <li>等待AI生成内容</li>
           <li>预览结果后，点击"应用到文档"即可</li>

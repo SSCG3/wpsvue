@@ -1,8 +1,8 @@
 <customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="ribbon.OnAddinLoad">
     <ribbon startFromScratch="false">
         <tabs>
-            <!-- 智能重写功能 Tab -->
-            <tab id="wpsAddinRewriteTab" label="智能重写">
+            <!-- AI写稿功能 Tab -->
+            <tab id="wpsAddinRewriteTab" label="AI写稿">
 				<group id="btnMainGroup" label="主要功能">
                     <button
                         id="btnStart"
@@ -10,8 +10,8 @@
                         onAction="ribbon.OnAction"
                         getImage="ribbon.GetImage"
                         size="large"
-                        screentip="打开智能重写工具"
-                        supertip="点击此按钮打开智能重写侧边栏，可进行扩写、续写、改写、缩写操作"
+                        screentip="打开AI写稿工具"
+                        supertip="点击此按钮打开AI写稿侧边栏，可进行扩写、续写、改写、缩写操作"
                     />
                     <button
                         id="btnHelp"
@@ -20,7 +20,7 @@
                         getImage="ribbon.GetImage"
                         size="large"
                         screentip="查看使用帮助"
-                        supertip="查看智能重写功能的详细使用说明和操作指南"
+                        supertip="查看AI写稿功能的详细使用说明和操作指南"
                     />
                     <button
                         id="btnAbout"

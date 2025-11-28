@@ -5,7 +5,7 @@
         <div class="about-icon">
           <img src="/images/ce.png" alt="国能QC项目" />
         </div>
-        <h1>智能重写插件</h1>
+        <h1>AI写稿插件</h1>
       </div>
       <div class="divider"></div>
 
