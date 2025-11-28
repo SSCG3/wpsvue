@@ -54,7 +54,7 @@
     </div>
 
     <div class="advanced-options" v-if="showAdvanced">
-      <el-divider>高级选项</el-divider>
+      <el-divider>写作要求</el-divider>
       <el-input
         v-model="requirements"
         placeholder="具体要求（可选），如：增加专业性、使用口语化表达等"
@@ -70,7 +70,7 @@
         size="small"
       >
         <i :class="showAdvanced ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"></i>
-        {{ showAdvanced ? '收起' : '展开' }}高级选项
+        {{ showAdvanced ? '收起' : '展开' }}写作要求
       </el-button>
     </div>
   </div>
