@@ -1,5 +1,14 @@
 <template>
   <div class="operation-panel">
+    <div class="model-selection">
+      <span class="model-label">模型选择</span>
+      <el-radio-group v-model="modelName">
+        <el-radio label="rsv-lixirkqxzkpslnqfgmxizjjil-aq">Deepseek模型</el-radio>
+        <el-radio label="qwen2---5-72b-dqydcbdv">千问模型</el-radio>
+        <el-radio label="rsv-xz3bbyim">金石模型</el-radio>
+      </el-radio-group>
+    </div>
+
     <div class="selected-info">
       <h4>当前选中文本</h4>
       <div class="text-preview" v-if="selectedText">
@@ -93,7 +102,8 @@ export default {
     return {
       showAdvanced: false,
       requirements: '',
-      currentOp: ''
+      currentOp: '',
+      modelName: 'rsv-lixirkqxzkpslnqfgmxizjjil-aq'  // 默认选择 Deepseek模型
     };
   },
   computed: {
@@ -115,7 +125,8 @@ export default {
 
       this.$emit('operate', {
         operation,
-        requirements: this.requirements
+        requirements: this.requirements,
+        modelName: this.modelName
       });
     }
   }
@@ -298,6 +309,45 @@ export default {
   .toggle-advanced {
     text-align: center;
     margin-top: 16px;
+  }
+
+  .model-selection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+
+    .model-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 16px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 2px;
+        margin-right: 10px;
+      }
+    }
+
+    .el-radio-group {
+      display: flex;
+      gap: 24px;
+
+      .el-radio {
+        margin-right: 0;
+      }
+    }
   }
 }
 </style>

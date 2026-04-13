@@ -111,7 +111,8 @@ export default {
         const requestParams = {
           operation: params.operation,
           text: cleanText,
-          requirements: params.requirements || ''
+          requirements: params.requirements || '',
+          modelName: params.modelName
           // word_limit 不传递，让后端自动计算
         };
 

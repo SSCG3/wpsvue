@@ -83,6 +83,10 @@ export async function aiOperation(params, onChunk, onError) {
       requestBody.word_limit = params.word_limit;  // 可选的字数限制
     }
 
+    if (params.modelName) {
+      requestBody.model_name = params.modelName;  // 模型选择
+    }
+
     // 调试输出
     console.log('发送AI请求参数:', requestBody);
 
